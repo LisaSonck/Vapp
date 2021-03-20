@@ -1,0 +1,29 @@
+bintray {
+    apiUrl = bintrayApiUrl
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['mavenJava']
+    publish = true
+
+    if (project.hasProperty("override")) {
+        override = project.property("override")
+    }
+
+    pkg {
+        repo = mavenRepoName
+        name = pkgName
+        if (!isNull(bintrayOrg)) {
+            userOrg = bintrayOrg
+        }
+        desc = pkgDesc
+        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+        licenses = ['Apache-2.0']
+        version {
+            name = versionName
+        }
+    }
+}
+
+boolean isNull(String value) {
+    return value == null || value == "" || value == 'null'
+}

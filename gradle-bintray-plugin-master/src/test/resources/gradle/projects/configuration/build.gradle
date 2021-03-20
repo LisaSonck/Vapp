@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
+    }
+}
+
+def rootProjectDir = projectDir
+def testsDir = new File(rootProjectDir.getParentFile().getParentFile(), 'buildFiles')
+
+def getTestFile = { fileName ->
+    testsDir.toString() + '/' + fileName
+}
+
+group = pkgName
+version = versionName
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'com.jfrog.bintray'
+}
+
+apply from: getTestFile("${testName}.gradle")

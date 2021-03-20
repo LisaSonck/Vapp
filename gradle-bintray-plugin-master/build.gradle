@@ -1,0 +1,164 @@
+group = 'com.jfrog.bintray.gradle'
+version = currentVersion
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+apply plugin: 'idea'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'com.jfrog.bintray'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile('org.codehaus.groovy.modules.http-builder:http-builder:0.7.2') {
+        exclude(module: 'groovy')
+    }
+    compile('org.apache.maven.resolver:maven-resolver-ant-tasks:1.2.0')
+    // provided by Gradle
+    compileOnly('org.apache.maven:maven-project:2.0.11')
+    testRuntime('org.apache.maven:maven-project:2.0.11')
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude(module: 'groovy-all')
+    }
+    testCompile('com.jfrog.bintray.client:bintray-client-java-api:0.4')
+    testCompile('com.jfrog.bintray.client:bintray-client-java-service:0.4')
+    testCompile('com.jfrog.bintray.client:bintray-client-java-impl:0.1.1')
+    testCompile('org.codehaus.gpars:gpars:1.2.1')
+    testCompile('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1')
+}
+
+test {
+    if (System.getProperty('testsDebug', 'true').toBoolean()) {
+        testLogging {
+            exceptionFormat "full"
+            events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+            minGranularity 0
+        }
+    }
+    systemProperties = [
+        'http.proxyHost': System.getProperty('http.proxyHost'),
+        'http.proxyPort': System.getProperty('http.proxyPort'),
+        'http.proxyUser': System.getProperty('http.proxyUser'),
+        'http.proxyPassword': System.getProperty('http.proxyPassword')
+    ]
+}
+
+compileGroovy {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
+
+def javaApiUrl = 'http://docs.oracle.com/javase/1.7.0/docs/api/'
+def groovyApiUrl = 'http://groovy.codehaus.org/gapi/'
+tasks.withType(Javadoc) {
+    options.links(javaApiUrl, groovyApiUrl)
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+//jar.dependsOn sourcesJar
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "yoav"
+            name "Yoav Landman"
+            email "yoavl@jfrog.com"
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'A gradle plugin for publishing to Bintray')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+task createReleasePropertiesFile(type:Exec) {
+    String fileName = 'bintray.plugin.release.properties'
+    println 'Creating $fileName'
+    String fileContent = "version=$currentVersion"
+    (new File("$rootDir/gradle-bintray-plugin-master/src/main/resources/$fileName")).write(fileContent)
+}
+
+artifactory {
+    contextUrl = 'https://oss.jfrog.org'
+    resolve {
+        repository {
+            repoKey = 'libs-release'
+        }
+    }
+    publish {
+        repository {
+            repoKey = 'oss-snapshot-local' //The Artifactory repository key to publish to
+            //when using oss.jfrog.org the credentials are from Bintray. For local build we expect them to be found in
+            //~/.gradle/gradle.properties, otherwise to be set in the build server
+            username = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+            password = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+        }
+        defaults {
+            publications 'mavenJava'
+            properties = ['bintray.repo': 'jfrog/jfrog-jars', 'bintray.package': 'gradle-bintray-plugin', 'bintray.version': version.toString()]
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+    publications = ['mavenJava']
+    pkg {
+        repo = 'jfrog-jars'
+        userOrg = 'jfrog'
+        name = 'gradle-bintray-plugin'
+        licenses = ['Apache-2.0']
+        version {
+            attributes = ['gradle-plugin': 'com.jfrog.bintray:com.jfrog.bintray.gradle:gradle-bintray-plugin']
+        }
+    }
+}
+
+task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') {
+    doLast {
+        logger.info "Installing $project.name"
+    }
+}

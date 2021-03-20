@@ -1,0 +1,27 @@
+def pkgLabels = [label1, label2, label3]
+
+bintray {
+    apiUrl = bintrayApiUrl
+    configurations = ['archives']
+    publish = true
+    pkg {
+        repo = mavenRepoName
+        name = pkgName
+        if (!isNull(bintrayOrg)) {
+            userOrg = bintrayOrg
+        }
+        desc = pkgDesc
+        labels = pkgLabels
+        licenses = ['Apache-2.0']
+        websiteUrl = 'https://github.com/bintray/gradle-bintray-plugin'
+        issueTrackerUrl = 'https://github.com/bintray/gradle-bintray-plugin/issues'
+        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+        version {
+            name = versionName
+        }
+    }
+}
+
+boolean isNull(String value) {
+    return value == null || value == "" || value == 'null'
+}

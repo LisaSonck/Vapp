@@ -1,0 +1,38 @@
+def pkgLabels = [label1, label2, label3]
+def debianDir = new File(projectDir.getParentFile().getParentFile().getParentFile(), 'debian').getCanonicalPath()
+
+bintray {
+    apiUrl = bintrayApiUrl
+    user = bintrayUser
+    key = bintrayKey
+    filesSpec {
+        from debianDir
+        into '.'
+    }
+    publish = true
+    pkg {
+        repo = debianRepoName
+        name = pkgName
+        debian {
+            distribution = 'squeeze'
+            component = 'main'
+            architecture = 'i386,noarch,amd64'
+        }
+        if (!isNull(bintrayOrg)) {
+            userOrg = bintrayOrg
+        }
+        desc = pkgDesc
+        labels = pkgLabels
+        licenses = ['Apache-2.0']
+        websiteUrl = 'https://github.com/bintray/gradle-bintray-plugin'
+        issueTrackerUrl = 'https://github.com/bintray/gradle-bintray-plugin/issues'
+        vcsUrl = 'https://github.com/bintray/gradle-bintray-plugin.git'
+        version {
+            name = versionName
+        }
+    }
+}
+
+boolean isNull(String value) {
+    return value == null || value == "" || value == 'null'
+}

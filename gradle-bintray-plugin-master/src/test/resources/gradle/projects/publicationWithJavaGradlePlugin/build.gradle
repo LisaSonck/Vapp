@@ -1,0 +1,109 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
+    }
+}
+
+def rootProjectDir = projectDir
+def testsDir = new File(rootProjectDir.getParentFile().getParentFile(), 'buildFiles')
+def projectUrl = 'https://github.com/bintray/gradle-bintray-plugin'
+
+def getTestFile = { fileName ->
+    testsDir.toString() + '/' + fileName
+}
+
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-gradle-plugin'
+
+    group = pkgName
+    version = versionName
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    dependencies {
+        testCompile 'junit:junit:4.7'
+    }
+
+    // custom tasks for creating source/javadoc jars
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    // add javadoc/source jar tasks as artifacts
+    artifacts {
+        archives sourcesJar, javadocJar
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                if (plugins.hasPlugin('war')) {
+                    from components.web
+                } else {
+                    from components.java
+                }
+
+                artifact sourcesJar {
+                    classifier "sources"
+                }
+
+                artifact javadocJar {
+                    classifier "javadoc"
+                }
+
+                pom.withXml {
+                    asNode().children().last() + {
+                        resolveStrategy = Closure.DELEGATE_FIRST
+                        name 'project-name'
+                        description 'description for project'
+                        url projectUrl
+                        scm {
+                            url projectUrl
+                            connection projectUrl
+                            developerConnection projectUrl
+                        }
+                        licenses {
+                            license {
+                                name 'The Apache Software License, Version 2.0'
+                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                distribution 'repo'
+                            }
+                        }
+                        developers {
+                            developer {
+                                id 'JFrog'
+                                name 'JFrogDev'
+                                email 'jfrogdev@jfrog.com'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    apply from: getTestFile("${testName}.gradle")
+}

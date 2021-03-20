@@ -1,0 +1,24 @@
+//add classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0' to buildscript.dependencies
+apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.novoda.bintray-release'
+
+bintray {
+    user = "" //BINTRAY_USER
+    key = "" //BINTRAY_KEY
+
+    configurations = ['archives']
+    publish = true
+    override = false
+    dryRun = false
+
+    pkg {
+        repo = "" //BINTRAY_REPO
+        name = "" //BINTRAY_NAME
+        licenses = "" //[BINTRAY_LICENSE]
+        vcsUrl = "" //BINTRAY_VCS_URL
+        desc = "" //BINTRAY_DESCRIPTION
+        websiteUrl = "" //BINTRAY_WEBSITE_URL
+        issueTrackerUrl = "" //BINTRAY_ISSUE_TRACKER_URL
+        publicDownloadNumbers = true
+    }
+}
