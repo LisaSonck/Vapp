@@ -1,6 +1,7 @@
 package no.nordicsemi.android.nrftoolbox;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +31,11 @@ public class HomeFragment extends Fragment {
         gr_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fr = new GraphFragment();
+                Intent i = new Intent(view.getContext(), GraphActivity.class);
+                startActivity(i);
+                /*Fragment fr = new GraphFragment();
                 FragmentChangeListener fc = (FragmentChangeListener)getActivity();
-                fc.replaceFragment(fr);
+                fc.replaceFragment(fr);*/
             }
         });
         st_button.setOnClickListener(new View.OnClickListener() {
