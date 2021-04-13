@@ -84,4 +84,7 @@
 	<string name="numbers_message">Numbers</string>
 	<string name="Graph_button">Graph</string>
 	<string name="Statistics_button">Statistics</string>
+	<string name="BTData">\"data\"</string>
+	<string name="Activity">\"act\"</string>
+	<string name="UserName">username</string>
 </resources>
