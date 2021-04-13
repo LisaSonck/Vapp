@@ -98,12 +98,14 @@ public class SplashscreenActivity extends AppCompatActivity implements FragmentC
 						new NumbersFragment()).commit();
 				break;
 			case R.id.nav_graph:
-				getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-						new GraphFragment()).commit();
+				Intent i = new Intent(this, GraphActivity.class);
+				startActivity(i);
+				//getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+				//		new GraphFragment()).commit();
 				break;
 			case R.id.nav_bluetooth:
-				Intent i = new Intent(this, FeaturesActivity.class);
-				startActivity(i);
+				Intent ii = new Intent(this, FeaturesActivity.class);
+				startActivity(ii);
 				break;
 		}
 
@@ -129,5 +131,8 @@ public class SplashscreenActivity extends AppCompatActivity implements FragmentC
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.fragment_container, fragment);
 		fragmentTransaction.commit();
+	}
+	public FragmentManager getFM(){
+		return getSupportFragmentManager();
 	}
 }
