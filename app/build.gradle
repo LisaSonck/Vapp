@@ -35,6 +35,7 @@ android {
 dependencies {
     implementation project(':common')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     wearApp project(path: ':wear')
 
     // nRF Toolbox is using Play Service 10.2.0 in order to make the app working in China:

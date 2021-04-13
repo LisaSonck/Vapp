@@ -1,5 +1,5 @@
 group = 'com.jfrog.bintray.gradle'
-version = currentVersion
+version = "1.0.0";
 
 buildscript {
     repositories {
@@ -116,7 +116,7 @@ publishing {
 task createReleasePropertiesFile(type:Exec) {
     String fileName = 'bintray.plugin.release.properties'
     println 'Creating $fileName'
-    String fileContent = "version=$currentVersion"
+    String fileContent = "version=1.0.0"
     (new File("$rootDir/gradle-bintray-plugin-master/src/main/resources/$fileName")).write(fileContent)
 }
 
