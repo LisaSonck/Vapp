@@ -27,6 +27,7 @@ public class HomeFragment extends Fragment {
 
         Button gr_button = (Button) view.findViewById(R.id.graph_today_button);
         Button st_button = (Button) view.findViewById(R.id.statistics_today_button);
+
         //NavigationView navigationView = view.findViewById(R.id.nav_view);
         gr_button.setOnClickListener(new View.OnClickListener() {
             @Override
