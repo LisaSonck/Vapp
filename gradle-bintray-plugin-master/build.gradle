@@ -1,17 +1,16 @@
 group = 'com.jfrog.bintray.gradle'
-version = currentVersion;
+version = "1.0";
 
 buildscript {
     repositories {
-        mavenLocal(buildinfo:build-info-extractor-gradle:3.1.1"
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
     }
 }
-)
-jcenter()
-}
-dependencies {
-    classpath "org.jfrog.
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'idea'
@@ -116,7 +115,7 @@ publishing {
 task createReleasePropertiesFile(type:Exec) {
     String fileName = 'bintray.plugin.release.properties'
     println 'Creating $fileName'
-    String fileContent = CurrentVersion
+    String fileContent = "1.0"
     (new File("$rootDir/gradle-bintray-plugin-master/src/main/resources/$fileName")).write(fileContent)
 }
 
