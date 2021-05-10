@@ -9,7 +9,7 @@
         android:id="@+id/graph_toolbaren"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/teal_700"
+        android:background="@color/actionBarColor"
         >
     </androidx.appcompat.widget.Toolbar>
 
@@ -23,6 +23,7 @@
             android:id="@+id/graphDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:forceDarkAllowed="false"
             android:text="Day" />
 
         <com.google.android.material.tabs.TabItem
@@ -68,7 +69,7 @@
             android:id="@+id/graph_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/teal_200">
+            android:background="@color/white">
 
         </FrameLayout>
     </LinearLayout>

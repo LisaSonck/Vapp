@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
+    android:background="@color/white"
     tools:visibility="visible">
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_marginBottom="100dp"
         android:width="130dp"
         android:text="@string/Statistics_button"
-        app:backgroundTint="@color/teal_700" />
+        app:backgroundTint="@color/actionBarColor" />
 
     <Button
         android:id="@+id/graph_today_button"
@@ -40,7 +40,7 @@
         android:layout_marginBottom="100dp"
         android:width="130dp"
         android:text="@string/Graph_button"
-        app:backgroundTint="@color/teal_700" />
+        app:backgroundTint="@color/actionBarColor" />
 
 
 </RelativeLayout>

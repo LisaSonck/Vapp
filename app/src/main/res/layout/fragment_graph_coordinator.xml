@@ -5,7 +5,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
+    android:background="@color/white"
     tools:visibility="visible"
     >
 
@@ -14,12 +14,12 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/teal_700">
+        android:background="@color/white">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
+            android:background="@color/actionBarColor"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
 
             android:layout_gravity="bottom"
-            android:background="@color/teal_700"
+            android:background="@color/actionBarColor"
             app:tabMode="scrollable">
 
             <com.google.android.material.tabs.TabItem
