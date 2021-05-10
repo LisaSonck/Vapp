@@ -51,10 +51,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="220dp"
         android:text="add"
-        app:backgroundTint="@color/actionBarColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_data"/>
+        app:backgroundTint="@color/actionBarColor"/>
 
 
 

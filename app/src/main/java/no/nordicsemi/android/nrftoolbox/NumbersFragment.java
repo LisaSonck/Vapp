@@ -22,7 +22,7 @@ import java.text.DateFormat;
 public class NumbersFragment extends Fragment {
     //reference to buttons on layout
     Button btn_1;
-    EditText et_date, et_data, et_name, et_act;
+    EditText et_data, et_name, et_act;
     RecyclerView recycle;
 
     @Nullable
