@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Graph_MonthFragment#newInstance} factory method to
+ * Use the  factory method to
  * create an instance of this fragment.
  */
 public class Graph_MonthFragment extends Fragment {
@@ -19,6 +23,13 @@ public class Graph_MonthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_graph__month, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph__month, container, false);
+        GraphView graph = (GraphView) view.findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+        for(int i = 0; i<3; i++){
+            series.appendData(new DataPoint(i-1, i+1), true, 10);
+        }
+        graph.addSeries(series);
+        return view;
     }
 }

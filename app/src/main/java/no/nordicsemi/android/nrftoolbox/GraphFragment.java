@@ -19,6 +19,7 @@ public class GraphFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //zo layout inflaten
+
         return inflater.inflate(R.layout.fragment_graph_coordinator, container, false);
     }
 }
